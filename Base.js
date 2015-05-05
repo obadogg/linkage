@@ -1,6 +1,6 @@
 
 
-define(['js/class/class'], function(Class) {
+define(['class'], function(Class) {
 
 	//基本父类
 	var Base = Class.extend({

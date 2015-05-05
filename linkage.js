@@ -1,4 +1,4 @@
-define(['js/class/Base'], function(Base) {
+define(['jquery', 'Base'], function($, Base) {
 	//
 	var Windower = Base.extend({
 
@@ -73,6 +73,10 @@ define(['js/class/Base'], function(Base) {
 					domArr.push($(dom[i]).val())
 				}
 			}
+			// //置空
+			// this.htmlData = []
+			// 	//存储用于渲染到页面的数据的数组
+			// this.renderData = []
 
 			//根据前边select的值遍历出后边含有后边值的对象
 			var frontInfo = frontLoop(domArr)
