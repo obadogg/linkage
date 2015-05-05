@@ -37,6 +37,11 @@ define(['js/class/Base'], function(Base) {
 			this._readData()
 		},
 
+		//自定义获取数据
+		_userHandle:function(){
+			
+		},
+		
 		//置空select
 		_empty: function() {
 			var dom = this.get('dom'),
@@ -246,8 +251,12 @@ define(['js/class/Base'], function(Base) {
 					$(dom[k]).on('change', function() {
 						//当前select索引
 						self.selectIndex = k
-
-						self['_handle']()
+						//添加自定义获取数据方式--返回数组
+						if( typeof self.get('handle') == 'function'){
+							self['_userHandle']()
+						}else{
+							self['_handle']()
+						}
 					})
 
 				})(i)
