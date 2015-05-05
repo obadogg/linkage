@@ -1,4 +1,4 @@
-require(['jquery','linkage'], function($,Windower) {
+require(['js/app/linkage'], function(Windower) {
 	//
 	
 	var w = new Windower({
