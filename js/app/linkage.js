@@ -185,7 +185,8 @@ define(['js/class/Base'], function(Base) {
 						// 	dataDepath = 0
 						// }
 						//是否是doitData的最后一层
-						( v.val || v.val == '' ) && v.items ? (value = v.val,dataDepath = 1) : (value = v,dataDepath = 0)
+						( v.val || v.val == '' ) && v.items ? 
+						(value = v.val,dataDepath = 1) : (value = v,dataDepath = 0)
 
 						//是有默认项
 						if( hasData && value == firstValue ){
@@ -247,7 +248,9 @@ define(['js/class/Base'], function(Base) {
 						val        = arr[1],
 						isSelected = arr[2]
 
-					isSelected ? str += '<option value="' + val + '" selected="selected">' + key + '</option>' : str += '<option value="' + val + '">' + key + '</option>'
+					isSelected ? 
+					str += '<option value="' + val + '" selected="selected">' + key + '</option>' :
+					str += '<option value="' + val + '">' + key + '</option>'
 				}
 
 				//把html字符串推入数组
