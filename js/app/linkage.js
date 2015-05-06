@@ -39,9 +39,9 @@ define(['js/class/Base'], function(Base) {
 
 		//自定义获取数据
 		_userHandle:function(){
-			
+
 		},
-		
+
 		//置空select
 		_empty: function() {
 			var dom = this.get('dom'),
@@ -60,18 +60,22 @@ define(['js/class/Base'], function(Base) {
 		},
 
 		//读取数据用于拼装html
-		_readData: function(isEmpty) {
+		_readData: function(defaultData) {
 			
 			var
 			//当前select索引
 				num = this.selectIndex,
+
 				originalData = this.get('data'),
 				dom = this.get('dom'),
-				domArr = [],
-				self = this
 
-			//如果isEmpty不存在或者为false,把点击的select和他前边的值推入数组domArr
-			if (!isEmpty) {
+				domArr = [],
+				self = this,
+
+				//是否有默认项
+				hasData = Object.prototype.toString.call(defaultData).toLowerCase() === '[object array]'
+			//如果defaultData不存在或者为false,把点击的select和他前边的值推入数组domArr
+			if (!defaultData) {
 
 				for (var i = 0; i <= num; i++) {
 
@@ -134,31 +138,78 @@ define(['js/class/Base'], function(Base) {
 					// console.log(self.htmlData)
 					return
 				}
-
+				console.log(data)
 				// alert(1111)
 				var cache = [],
 					//元素对象深度
-					dataDepath = 1
+					dataDepath = 1,
+					//赋值
+					value
 
-				function doit(data) {
+				function doit(doitData) {
+					//置空key
+					var key = null,
+						//传入数组第一项数值
+						firstValue = hasData && defaultData.length > 0 ? defaultData.shift() : null
 
-					$.each(data, function(k, v) {
+					$.each(doitData, function(k, v) {
 
-						//遍历val是否存在,如果不存在说明到了对象最后一层，datapath设为0
-						(v.val || v.val == '') && v.items ? (cache.push(k + ':' + v.val), dataDepath = 1) :
+						//遍历val是否存在
+						// if( (v.val || v.val == '') && v.items){
+						// 	//是否有默认选项
+						// 	if( hasData && v.val == firstValue){
+								
+						// 		key = k
 
-							(cache.push(k + ':' + v), dataDepath = 0)
+						// 		cache.push(k + ':' + v.val + ':' + 'selected')
+						// 	}else{
 
+						// 		cache.push(k + ':' + v.val )
+						// 	}
+
+						// 	//深度是否到底
+						// 	dataDepath = 1
+						// }else{
+
+						// 	//是否有默认选项
+						// 	if( hasData && v == firstValue){
+
+						// 		key = k
+						// 		cache.push(k + ':' + v + ':' + 'selected')
+						// 	}else{
+
+						// 		cache.push(k + ':' + v )
+						// 	}
+
+						// 	//深度是否到底
+						// 	dataDepath = 0
+						// }
+						//是否是doitData的最后一层
+						( v.val || v.val == '' ) && v.items ? (value = v.val,dataDepath = 1) : (value = v,dataDepath = 0)
+
+						//是有默认项
+						if( hasData && value == firstValue ){
+							//key等于选中的键名
+							key = k
+							cache.push(k + ':' + value + ':' + 'selected')
+
+						}else{
+
+							cache.push(k + ':' + value )
+
+						}
 					})
+					
 					self.htmlData.push(cache)
 						//每一个select的数组
 					cache = []
 						//如果遍历到最后一项
 					if (dataDepath) {
+						
 						//选择第一项继续遍历
-						var key = self.htmlData[self.htmlData.length - 1][0].split(':')[0]
-				
-						doit(data[key].items)
+						key ? void 0 : key = self.htmlData[self.htmlData.length - 1][0].split(':')[0]
+			
+						doit(doitData[key].items)
 
 					}
 				}
@@ -191,15 +242,17 @@ define(['js/class/Base'], function(Base) {
 
 				for (var k = 0; k < headData.length; k++) {
 
-					var arr = headData[k].split(':'),
-						key = arr[0],
-						val = arr[1]
+					var arr        = headData[k].split(':'),
+						key        = arr[0],
+						val        = arr[1],
+						isSelected = arr[2]
 
-					str += '<option value="' + val + '">' + key + '</option>'
+					isSelected ? str += '<option value="' + val + '" selected="selected">' + key + '</option>' : str += '<option value="' + val + '">' + key + '</option>'
 				}
 
 				//把html字符串推入数组
 				render.push(str)
+				// console.log(render)
 				//制空
 				str = ''
 			}
@@ -211,10 +264,9 @@ define(['js/class/Base'], function(Base) {
 		render: function() {
 			//初始化,没有数据---不能这么判断，如果数组没数据可能不只是初始进来，也可能是末尾项选择
 			if (this.renderData.length === 0 && this.firstTime) {
-				//没有默认项
-				// if (!this.get('default')) {
-				//全部置空
-				this._readData(true)
+				//判断是否有初始化数据
+				var defaultData = this.get('defaultData')
+				defaultData ? this._readData(defaultData) : this._readData(true)
 				//初始化完成后firstTime 设置成false
 				this.firstTime = false
 					// }
