@@ -33,7 +33,7 @@ var threeSelectData={
                 val: "1",
                 items: {
                     "\u4e1c\u57ce\u533a": {
-                        val:2123123,
+                        val:55555,
                         items:{
                             '王府井':{
                                 val:3333333333,
