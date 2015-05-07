@@ -7,6 +7,10 @@ require(['js/app/linkage'], function(Windower) {
         //默认数据 天津 - 市辖区 ,'3'找不到对应值 直接放弃
         defaultData:['2','2','3']
 	})
-    
+
+    console.log(w)
+    w.on('change',function(msg){
+        alert(msg)
+    })
 })
 

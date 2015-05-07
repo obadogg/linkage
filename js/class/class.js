@@ -26,6 +26,11 @@ define(function() {
     Class.extend = function(prop) {
       //保留当前类，一般是父类的原型
       //this指向父类。初次时指向Class超级父类
+      //obadogg -- 如果有多个对象，先糅杂对象
+      if ( arguments.length > 1){
+        
+      }
+      //obadog --
       var _super = this.prototype;
 
       // Instantiate a base class (but only create the instance,

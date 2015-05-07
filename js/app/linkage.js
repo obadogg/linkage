@@ -1,6 +1,6 @@
-define(['js/class/Base'], function(Base) {
+define(['js/class/Events','js/class/Base'], function(Events,Base) {
 	//
-	var Windower = Base.extend({
+	var Windower = Base.extend($.extend(Events,/*混入观察者模式*/{
 
 		//初始化，init继承于Base类，若子类不用自己的初始化自己成员，则不用重写_init,
 		//就是说init够用，则不用重写_init
@@ -304,6 +304,9 @@ define(['js/class/Base'], function(Base) {
 
 				(function(k) {
 					$(dom[k]).on('change', function() {
+
+						var val = $(this).val()
+						self.fire('change',[k,val])
 						//当前select索引
 						self.selectIndex = k
 						//添加自定义获取数据方式--返回数组
@@ -318,7 +321,7 @@ define(['js/class/Base'], function(Base) {
 
 			}
 		}
-	})
+	}))
 		
 	//
 	return Windower
