@@ -305,8 +305,12 @@ define(['js/class/Events','js/class/Base'], function(Events,Base) {
 				(function(k) {
 					$(dom[k]).on('change', function() {
 
-						var val = $(this).val()
-						self.fire('change',[k,val])
+						//当前点击的值
+						var val = $(this).val(),
+						//当前点击的key
+							key = $(this).find('option[value = "'+ val +'"]').html()
+						//触发自定义change事件
+						self.fire('change',[k,key,val])
 						//当前select索引
 						self.selectIndex = k
 						//添加自定义获取数据方式--返回数组

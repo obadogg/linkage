@@ -10,7 +10,12 @@ require(['js/app/linkage'], function(Windower) {
 
     console.log(w)
     w.on('change',function(msg){
-        alert(msg)
+        if( msg[0] == 0 && msg[1] == '河北省'){
+            alert('我籍贯这里的')
+        }
+        if( msg[0] == 0 && msg[1] == '北京市'){
+            alert('这是我第二个家乡')
+        }
     })
 })
 
